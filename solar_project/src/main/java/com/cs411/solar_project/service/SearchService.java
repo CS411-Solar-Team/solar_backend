@@ -52,7 +52,7 @@ public class SearchService {
             List<String> company_Info = new ArrayList<>();
             company_Info.add(company.getString("name"));
             company_Info.add(company.getString("formatted_address"));
-            boolean has_website = company.has("fieldName") ? company_Info.add(company.getString("website")):company_Info.add("no website on file");
+            boolean has_website = company.has("website") ? company_Info.add(company.getString("website")):company_Info.add("no website on file");
             boolean has_rating = company.has("rating") ? company_Info.add(company.getString("rating")):company_Info.add("no rating on file");
             boolean has_phone_number = company.has("international_phone_number") ? company_Info.add(company.getString("international_phone_number")):company_Info.add("no phone number on file");
             res.add(company_Info);

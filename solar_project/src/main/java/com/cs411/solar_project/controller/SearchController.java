@@ -1,5 +1,6 @@
 package com.cs411.solar_project.controller;
 
+import com.cs411.solar_project.model.Company;
 import com.cs411.solar_project.service.SearchService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,22 @@ public class SearchController {
     }
 
     @GetMapping(value = "/search")
-    public List<List<String>> searchOrder(@RequestParam(name = "user_address") String usersAddress,
+    public List<Company> searchOrder(@RequestParam(name = "user_address") String usersAddress,
                                      LocalDateTime pickUpTime) throws IOException, JSONException {
 
         List<List<String>> companies_info = searchService.getCompanyInfo(usersAddress);
-        return companies_info;
+
+        List<Company> companyList = new ArrayList<Company>();
+        for(List<String> company_info : companies_info){
+            Company.Builder builder = new Company.Builder();
+            companyList.add(new Company(builder
+                    .setCompanyName(company_info.get(0))
+                    .setCompanyAddress(company_info.get(1))
+                    .setCompanyWebsite(company_info.get(2))
+                    .setCompanyRating(company_info.get(3))
+                    .setCompanyPhoneNumber(company_info.get(4))
+            ));
+        }
+        return companyList;
     }
 }
