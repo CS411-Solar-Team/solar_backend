@@ -19,6 +19,7 @@ public class SearchService {
 
     public String preURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=solar companies near";
     public String infoPreURL = "https://maps.googleapis.com/maps/api/place/details/json?place_id=";
+    public String preURLToGetLocation = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=";
     public String key = "&key=AIzaSyBawHfdRBf3Z3zTCMd2oRxQJgQ24Li1kUE";
 
     public List<List<String>> getCompanyInfo(String address) throws IOException, JSONException {
@@ -58,5 +59,31 @@ public class SearchService {
             res.add(company_Info);
         }
         return res;
+    }
+
+    public List<Double> getLatNLng (String address) throws IOException, JSONException {
+        List<Double> latNLng = new ArrayList<>();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        String addressURL = preURLToGetLocation + address + key;
+
+        Request request = new Request.Builder()
+                .url(addressURL)
+                .method("GET", null)
+                .build();
+        Response response = client.newCall(request).execute();
+        String body = response.body().string();
+        JSONObject jsonobject = new JSONObject(body);
+
+        JSONObject location = jsonobject.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
+        double lat = location.getDouble("lat");
+        double lng = location.getDouble("lng");
+        latNLng.add(lat);
+        latNLng.add(lng);
+        return latNLng;
+    }
+
+    public double getSavingAmount (double bill) throws IOException, JSONException {
+        return bill*0.75*12*25;
     }
 }

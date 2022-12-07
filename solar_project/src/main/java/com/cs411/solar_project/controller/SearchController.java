@@ -1,7 +1,9 @@
 package com.cs411.solar_project.controller;
 
 import com.cs411.solar_project.model.Company;
+import com.cs411.solar_project.model.Order;
 import com.cs411.solar_project.service.SearchService;
+import com.mysql.cj.x.protobuf.MysqlxCrud;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,8 +26,8 @@ public class SearchController {
     }
 
     @GetMapping(value = "/search")
-    public List<Company> searchOrder(@RequestParam(name = "user_address") String usersAddress,
-                                     LocalDateTime pickUpTime) throws IOException, JSONException {
+    public Order searchOrder(@RequestParam(name = "user_address") String usersAddress,
+                                     @RequestParam(name = "bill") double bill) throws IOException, JSONException {
 
         List<List<String>> companies_info = searchService.getCompanyInfo(usersAddress);
 
@@ -40,6 +42,19 @@ public class SearchController {
                     .setCompanyPhoneNumber(company_info.get(4))
             ));
         }
-        return companyList;
+
+        List<Double> latNLng = searchService.getLatNLng(usersAddress);
+
+        double saving = searchService.getSavingAmount(bill);
+
+        Order.Builder builder = new Order.Builder();
+        Order newOrder = new Order(builder
+                .setUserAddress(usersAddress)
+                .setBillNumber(bill)
+                .setSaving(saving)
+                .setCompanyID(companyList)
+        );
+
+        return newOrder;
     }
 }
