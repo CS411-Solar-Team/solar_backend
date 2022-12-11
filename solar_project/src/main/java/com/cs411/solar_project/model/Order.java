@@ -23,10 +23,6 @@ public class Order implements Serializable{
     @JoinColumn(name = "user_id")
     private User guest;
 
-    @OneToMany
-    @JoinColumn(name = "company_id")
-    private List<Company> companyID;
-
     @JsonProperty("user_address")
     private String userAddress;
 
@@ -36,6 +32,10 @@ public class Order implements Serializable{
     @JsonProperty("saving")
     private double saving;
 
+    @OneToMany
+    @JoinColumn(name = "company")
+    private List<Company> companies;
+
     public Order() {}
 
     public Order(Builder builder) {
@@ -44,7 +44,7 @@ public class Order implements Serializable{
         this.userAddress = builder.userAddress;
         this.billNumber = builder.billNumber;
         this.saving = builder.saving;
-        this.companyID = builder.companyID;
+        this.companies = builder.companies;
     }
 
     public Long getOrderID(){ return orderID; }
@@ -61,15 +61,15 @@ public class Order implements Serializable{
 
     public double getSaving() { return saving; }
 
-    public List<Company> getCompanyID(){ return companyID; }
+    public List<Company> getCompanies(){ return companies; }
 
     public Order setGuest(User guest) {
         this.guest = guest;
         return this;
     }
 
-    public Order setCompanyID(List<Company> companyID){
-        this.companyID = companyID;
+    public Order setCompanies(List<Company> companies){
+        this.companies = companies;
         return this;
     }
 
@@ -77,19 +77,20 @@ public class Order implements Serializable{
         @JsonProperty("order_ID")
         private Long orderID;
 
-        private User guest;
+        @JsonProperty("saving")
+        private double saving;
 
-        @JsonProperty("company_ID")
-        private List<Company> companyID;
+        @JsonProperty("company")
+        private List<Company> companies;
+
+        @JsonProperty("guest")
+        private User guest;
 
         @JsonProperty("user_address")
         private String userAddress;
 
         @JsonProperty("bill_number")
         private double billNumber;
-
-        @JsonProperty("saving")
-        private double saving;
 
         public Builder setOrderID(Long orderID) {
             this.orderID = orderID;
@@ -116,8 +117,8 @@ public class Order implements Serializable{
             return this;
         }
 
-        public Builder setCompanyID(List<Company> companyID){
-            this.companyID = companyID;
+        public Builder setCompanies(List<Company> companies){
+            this.companies = companies;
             return this;
         }
 

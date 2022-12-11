@@ -1,5 +1,6 @@
 package com.cs411.solar_project.service;
 
+import com.cs411.solar_project.repository.CompanyRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -20,7 +21,7 @@ public class SearchService {
     public String preURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=solar companies near";
     public String infoPreURL = "https://maps.googleapis.com/maps/api/place/details/json?place_id=";
     public String preURLToGetLocation = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=";
-    public String key = "&key=AIzaSyBawHfdRBf3Z3zTCMd2oRxQJgQ24Li1kUE";
+    public String key = "&key=";
 
     public List<List<String>> getCompanyInfo(String address) throws IOException, JSONException {
         List<List<String>> res = new ArrayList<>();
@@ -38,25 +39,29 @@ public class SearchService {
 
         for(int i = 0; i <= 9; i ++) {
             JSONObject name = jsonobject.getJSONArray("results").getJSONObject(i);
-            String place_id = name.getString("place_id");
-            String placeAPI = infoPreURL + place_id + key;
+            String place_rating = name.getString("rating");
+            if(Double.parseDouble(place_rating) >= 4.8){
+                String place_id = name.getString("place_id");
+                String placeAPI = infoPreURL + place_id + key;
 
-            Request request_Info = new Request.Builder()
-                    .url(placeAPI)
-                    .method("GET", null)
-                    .build();
-            Response response_Info = client.newCall(request_Info).execute();
-            String body_Info = response_Info.body().string();
-            JSONObject jsonobject_Info = new JSONObject(body_Info);
+                Request request_Info = new Request.Builder()
+                        .url(placeAPI)
+                        .method("GET", null)
+                        .build();
+                Response response_Info = client.newCall(request_Info).execute();
+                String body_Info = response_Info.body().string();
+                JSONObject jsonobject_Info = new JSONObject(body_Info);
 
-            JSONObject company = jsonobject_Info.getJSONObject("result");
-            List<String> company_Info = new ArrayList<>();
-            company_Info.add(company.getString("name"));
-            company_Info.add(company.getString("formatted_address"));
-            boolean has_website = company.has("website") ? company_Info.add(company.getString("website")):company_Info.add("no website on file");
-            boolean has_rating = company.has("rating") ? company_Info.add(company.getString("rating")):company_Info.add("no rating on file");
-            boolean has_phone_number = company.has("international_phone_number") ? company_Info.add(company.getString("international_phone_number")):company_Info.add("no phone number on file");
-            res.add(company_Info);
+                JSONObject company = jsonobject_Info.getJSONObject("result");
+                List<String> company_Info = new ArrayList<>();
+                company_Info.add(company.getString("name"));
+                company_Info.add(company.getString("formatted_address"));
+                boolean has_website = company.has("website") ? company_Info.add(company.getString("website")):company_Info.add("no website on file");
+                boolean has_rating = company.has("rating") ? company_Info.add(company.getString("rating")):company_Info.add("no rating on file");
+                boolean has_phone_number = company.has("international_phone_number") ? company_Info.add(company.getString("international_phone_number")):company_Info.add("no phone number on file");
+                res.add(company_Info);
+
+            }
         }
         return res;
     }
@@ -83,7 +88,7 @@ public class SearchService {
         return latNLng;
     }
 
-    public double getSavingAmount (double bill) throws IOException, JSONException {
-        return bill*0.75*12*25;
+    public double getSavingAmount (double bill, double lat) throws IOException, JSONException {
+        return bill*(1-Math.abs(lat)*0.5/90)*12*25;
     }
 }

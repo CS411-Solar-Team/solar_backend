@@ -22,4 +22,8 @@ public class RegisterController {
         registerService.add(user, UserRole.ROLE_GUEST);
     }
 
+    @PostMapping("/register/admin")
+    public void addHost(@RequestBody User user) {
+        registerService.add(user, UserRole.ROLE_HOST);
+    }
 }

@@ -23,5 +23,9 @@ public class AuthenticationController {
         return authenticationService.authenticate(user, UserRole.ROLE_GUEST);
     }
 
-}
+    @PostMapping("/authenticate/admin")
+    public Token authenticateHost(@RequestBody User user) {
+        return authenticationService.authenticate(user, UserRole.ROLE_HOST);
+    }
 
+}

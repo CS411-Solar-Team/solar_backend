@@ -16,9 +16,9 @@ public class Company implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int companyID;
 
-    @ManyToOne
-    @JoinColumn(name = "order_ID")
-    private Order orderID;
+//    @ManyToOne
+//    @JoinColumn(name = "order_ID")
+//    private Order orderID;
 
     @JsonProperty("company_name")
     private String companyName;
@@ -38,7 +38,7 @@ public class Company implements Serializable {
     public Company(){}
 
     public Company(Builder builder) {
-        this.orderID = builder.orderID;
+//        this.orderID = builder.orderID;
         this.companyID = builder.companyID;
         this.companyName = builder.companyName;
         this.companyAddress = builder.companyAddress;
@@ -51,9 +51,9 @@ public class Company implements Serializable {
         return companyID;
     }
 
-    public Order getOrderID() {
-        return orderID;
-    }
+//    public Order getOrderID() {
+//        return orderID;
+//    }
 
     public String getCompanyName() {
         return companyName;
@@ -75,16 +75,20 @@ public class Company implements Serializable {
         return companyRating;
     }
 
-    public void setOrderID(Order orderID) {
-        this.orderID = orderID;
+//    public void setOrderID(Order orderID) {
+//        this.orderID = orderID;
+//    }
+
+    public void setCompanyID(int companyID) {
+        this.companyID = companyID;
     }
 
     public static class Builder{
         @JsonProperty("company_ID")
         private int companyID;
 
-        @JsonProperty("order_ID")
-        private Order orderID;
+//        @JsonProperty("order_ID")
+//        private Order orderID;
 
         @JsonProperty("company_name")
         private String companyName;
@@ -106,10 +110,10 @@ public class Company implements Serializable {
             return this;
         }
 
-        public Builder setOrderID(Order orderID) {
-            this.orderID = orderID;
-            return this;
-        }
+//        public Builder setOrderID(Order orderID) {
+//            this.orderID = orderID;
+//            return this;
+//        }
 
         public Builder setCompanyName(String companyName) {
             this.companyName = companyName;
