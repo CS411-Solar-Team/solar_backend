@@ -6,6 +6,26 @@ Passcode: n+j+Sa7X
 
 # CS411_Project
 
+Topic: Solar (check detailed information in the following pitch)
+
+Frontend: React
+
+Backend: Java 
+Framework: Spring Boot
+
+Database: MySQL (deploy to Amazon RDS for better simplicty and scalability)
+
+API: Google Map API, Solcast API
+
+# Backend_Design_Diagram
+
+<img width="1047" alt="Screen Shot 2022-12-12 at 5 05 22 PM" src="https://user-images.githubusercontent.com/87915617/207165331-ba52f937-4162-49ad-a8b9-55c9ea7bafdc.png">
+
+# Data_Modeling
+
+<img width="956" alt="Screen Shot 2022-12-12 at 5 05 27 PM" src="https://user-images.githubusercontent.com/87915617/207165392-d608e56b-af59-42dc-9cf9-8be3c6f8f014.png">
+
+# Pitch
 
 Top 1. Solar:
 
@@ -41,6 +61,7 @@ Design a drone & robot delivery management system. We have a few bases in Boston
   APIs/Datasets: Google API(text search)/Pakage delivery time/Google Geolocation API
 > https://kilthub.cmu.edu/articles/dataset/Data_Collected_with_Package_Delivery_Quadcopter_Drone/12683453?file=26405936 -- info on drone deliveries
 > https://data.boston.gov/dataset/traffic-related-data -- info on boston traffic, for contrast w/ drone services
+
 
 
 
